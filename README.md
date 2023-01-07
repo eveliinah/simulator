@@ -9,15 +9,15 @@
 
 Airport-simulator. Test how many people arrive to the airport in given time. Choose how many security controls are available and select how fast the eployees work.
 
-![](simulator.jpg)
+<img src="simulator.jpg" width="400">
 
 See the arriving people in an animation.
 
-![](simu.jpg)
+<img src="simu.jpg" width="400">
 
 See the results in a graph and get old results from the database.
 
-![](results.jpg)
+<img src="results.jpg" width="400">
 
 Project framework by Simo Silander (teacher in Metropolia University of Applied Sciences) <br>
 Project by: Eveliina, Juho, Katja, Sebastian
