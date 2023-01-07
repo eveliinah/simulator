@@ -1,0 +1,305 @@
+package simulaattorinrunko5FX.src.simu.model;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import simulaattorinrunko5FX.src.controller.Kontrolleri;
+import simulaattorinrunko5FX.src.controller.IKontrolleri;
+import simulaattorinrunko5FX.src.eduni.distributions.Negexp;
+import simulaattorinrunko5FX.src.simu.framework.Kello;
+import simulaattorinrunko5FX.src.simu.framework.Moottori;
+import simulaattorinrunko5FX.src.simu.framework.Saapumisprosessi;
+import simulaattorinrunko5FX.src.simu.framework.Tapahtuma;
+
+public class OmaMoottori extends Moottori {
+
+	private Kello kello;
+	private Saapumisprosessi s_laukut;
+	private Saapumisprosessi s_checkin;
+	private Palvelupiste laukut1;
+	private Palvelupiste turva1;
+	private Palvelupiste turva2;
+	private Palvelupiste turva3;
+	private Palvelupiste turva4;
+	private Palvelupiste turva5;
+	private Palvelupiste checkin1;
+	private Palvelupiste erityisturva1;
+	private ArrayList<Palvelupiste> turvatarkastuspisteet;
+	private int turvaKa1 = 15;
+	private int turvaKa2 = 15;
+	private int turvaKa3 = 15;
+	private int turvaKa4 = 15;
+	private int turvaKa5 = 15;
+
+	public OmaMoottori(IKontrolleri kontrolleri) { // UUSI
+
+		super(kontrolleri); // UUSI
+		// LinkedList<Asiakas> jono = new LinkedList<>();
+
+		palvelupisteet = new Palvelupiste[8];
+
+		laukut1 = new Palvelupiste(new Negexp(10, 15), tapahtumalista, TapahtumanTyyppi.P_LAUKUT);
+		turva1 = new Palvelupiste(new Negexp(turvaKa1, 15), tapahtumalista, TapahtumanTyyppi.P_TURVA1);
+		turva2 = new Palvelupiste(new Negexp(turvaKa2, 15), tapahtumalista, TapahtumanTyyppi.P_TURVA2);
+		turva3 = new Palvelupiste(new Negexp(turvaKa3, 15), tapahtumalista, TapahtumanTyyppi.P_TURVA3);
+		turva4 = new Palvelupiste(new Negexp(turvaKa4, 15), tapahtumalista, TapahtumanTyyppi.P_TURVA4);
+		turva5 = new Palvelupiste(new Negexp(turvaKa5, 15), tapahtumalista, TapahtumanTyyppi.P_TURVA5);
+		checkin1 = new Palvelupiste(new Negexp(5, 15), tapahtumalista, TapahtumanTyyppi.P_CHECKIN);
+		erityisturva1 = new Palvelupiste(new Negexp(35, 15), tapahtumalista, TapahtumanTyyppi.P_ERITYISTURVA);
+		palvelupisteet[0] = laukut1;
+		palvelupisteet[1] = turva1;
+		palvelupisteet[2] = turva2;
+		palvelupisteet[3] = turva3;
+		palvelupisteet[4] = turva4;
+		palvelupisteet[5] = turva5;
+		palvelupisteet[6] = checkin1;
+		palvelupisteet[7] = erityisturva1;
+
+		s_checkin = new Saapumisprosessi(new Negexp(5, 15), tapahtumalista, TapahtumanTyyppi.S_CHECKIN);
+		s_laukut = new Saapumisprosessi(new Negexp(10, 15), tapahtumalista, TapahtumanTyyppi.S_LAUKUT);
+
+		turvatarkastuspisteet = new ArrayList<>();
+		turvatarkastuspisteet.add(turva1);
+		turvatarkastuspisteet.add(turva2);
+		turvatarkastuspisteet.add(turva3);
+		turvatarkastuspisteet.add(turva4);
+		turvatarkastuspisteet.add(turva5);
+
+		kello = Kello.getInstance();
+
+		// muutetaan default palvelupisteet käytössä oleviksi (tarvitaan suureiden
+		// näyttämiseen tulosnäkymässä)
+		laukut1.muutaKaytossa();
+		checkin1.muutaKaytossa();
+		erityisturva1.muutaKaytossa();
+	}
+
+	@Override
+	protected void alustukset() {
+		s_checkin.generoiSeuraava();
+		s_laukut.generoiSeuraava();// Ensimmäinen saapuminen järjestelmään
+	}
+
+	@Override
+	protected void suoritaTapahtuma(Tapahtuma t) { // B-vaiheen tapahtumat
+
+		Asiakas a;
+		switch (t.getTyyppi()) {
+
+		case S_CHECKIN:
+			a = new Asiakas();
+			checkin1.lisaaJonoon(a);
+			a.setPpJonoonSaapumisaika(kello.getAika());
+			s_checkin.generoiSeuraava();
+			((Kontrolleri) kontrolleri).visualisoiLaukutonAsiakas();
+			break;
+		case S_LAUKUT:
+			a = new Asiakas();
+			laukut1.lisaaJonoon(a);
+			a.setPpJonoonSaapumisaika(kello.getAika());
+			s_laukut.generoiSeuraava();
+			((Kontrolleri) kontrolleri).visualisoiLaukkuAsiakas();
+			break;
+		case P_CHECKIN:
+			a = checkin1.otaJonosta();
+			((Kontrolleri) kontrolleri).poistaLaukutonAsiakas();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaCheckin = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			checkin1.setPpKokonaisoleskeluaika(oleskeluaikaCheckin);
+			Palvelupiste lisaaTahan = getLyhinJono();
+			lisaaTahan.lisaaJonoon(a);
+			a.setPpJonoonSaapumisaika(kello.getAika());
+			break;
+		case P_LAUKUT:
+			a = laukut1.otaJonosta();
+			((Kontrolleri) kontrolleri).poistaLaukkuAsiakas();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaLaukut = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			laukut1.setPpKokonaisoleskeluaika(oleskeluaikaLaukut);
+			Palvelupiste lisaaTahan1 = getLyhinJono();
+			lisaaTahan1.lisaaJonoon(a);
+			a.setPpJonoonSaapumisaika(kello.getAika());
+
+			break;
+		case P_TURVA1:
+			a = turva1.otaJonosta();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaTurva1 = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			turva1.setPpKokonaisoleskeluaika(oleskeluaikaTurva1);
+			Random rand = new Random();
+			int mihin = rand.nextInt(20);
+			if (mihin == 1) {
+				erityisturva1.lisaaJonoon(a);
+				a.setPpJonoonSaapumisaika(kello.getAika());
+				break;
+			} else {
+				a.setPoistumisaika(Kello.getInstance().getAika());
+
+				a.raportti();
+			}
+			break;
+		case P_TURVA2:
+			a = turva2.otaJonosta();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaTurva2 = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			turva2.setPpKokonaisoleskeluaika(oleskeluaikaTurva2);
+			Random rand1 = new Random();
+			int mihin1 = rand1.nextInt(20);
+			if (mihin1 == 1) {
+				erityisturva1.lisaaJonoon(a);
+				a.setPpJonoonSaapumisaika(kello.getAika());
+
+			} else {
+				a.setPoistumisaika(Kello.getInstance().getAika());
+
+				a.raportti();
+			}
+			break;
+		case P_TURVA3:
+			a = turva3.otaJonosta();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaTurva3 = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			turva3.setPpKokonaisoleskeluaika(oleskeluaikaTurva3);
+			Random rand2 = new Random();
+			int mihin2 = rand2.nextInt(20);
+			if (mihin2 == 1) {
+				erityisturva1.lisaaJonoon(a);
+				a.setPpJonoonSaapumisaika(kello.getAika());
+			} else {
+				a.setPoistumisaika(Kello.getInstance().getAika());
+				a.raportti();
+			}
+			break;
+		case P_TURVA4:
+			a = turva4.otaJonosta();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaTurva4 = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			turva4.setPpKokonaisoleskeluaika(oleskeluaikaTurva4);
+			Random rand3 = new Random();
+			int mihin3 = rand3.nextInt(20);
+			if (mihin3 == 1) {
+				erityisturva1.lisaaJonoon(a);
+				a.setPpJonoonSaapumisaika(kello.getAika());
+			} else {
+				a.setPoistumisaika(Kello.getInstance().getAika());
+				a.raportti();
+			}
+			break;
+		case P_TURVA5:
+			a = turva5.otaJonosta();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaTurva5 = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			turva5.setPpKokonaisoleskeluaika(oleskeluaikaTurva5);
+			Random rand4 = new Random();
+			int mihin4 = rand4.nextInt(20);
+			if (mihin4 == 1) {
+				erityisturva1.lisaaJonoon(a);
+				a.setPpJonoonSaapumisaika(kello.getAika());
+			} else {
+				a.setPoistumisaika(Kello.getInstance().getAika());
+				a.raportti();
+			}
+			break;
+		case P_ERITYISTURVA:
+			a = erityisturva1.otaJonosta();
+			a.setPpPoistumisaika(kello.getAika());
+			double oleskeluaikaErityisturva = a.getPpPoistumisaika() - a.getPpJonoonSaapumisaika();
+			erityisturva1.setPpKokonaisoleskeluaika(oleskeluaikaErityisturva);
+
+			a.setPoistumisaika(Kello.getInstance().getAika());
+			a.raportti();
+
+		}
+	}
+
+	public void otaPalvelupisteetKayttoon(int monta) {
+		for (int i = 0; i <= monta; i++) {
+			turvatarkastuspisteet.get(i).muutaKaytossa();
+		}
+
+	}
+
+	@Override
+	protected void tulokset() {
+		// muokkaa summa vastaamaan järjestelmän läpi menneitä kaikkia asiakkaita (tee
+		// laskuri)
+		int summa = 0;
+		kontrolleri.naytaLoppuaika(Kello.getInstance().getAika());
+		for (int i = 0; i < palvelupisteet.length; i++) {
+			summa += palvelupisteet[i].getPalveltujenLkm();
+		}
+		kontrolleri.naytaPalvellutAsiakkkat(summa);
+
+		System.out.println("\nCheckin1: " + checkin1.raportti());
+		System.out.println("Laukut1: " + laukut1.raportti());
+		System.out.println("Turva1: " + turva1.raportti());
+		System.out.println("Turva2:" + turva2.raportti());
+		System.out.println("Turva3:" + turva3.raportti());
+		System.out.println("Turva4:" + turva4.raportti());
+		System.out.println("Turva5:" + turva5.raportti());
+		System.out.println("Erityisturva: " + erityisturva1.raportti());
+		;
+
+		System.out.println("Simulointi päättyi kello " + Kello.getInstance().getAika());
+		System.out.println("Tulokset ... puuttuvat vielä");
+		// palvelupistekohtaisesti: palveltujen + saapuneiden LKM
+		// koko järjestelmän tasolla edelliset
+	}
+
+	public Palvelupiste getLyhinJono() {
+
+		Palvelupiste lyhin = null;
+		int l = 10000000;
+
+		for (Palvelupiste p : turvatarkastuspisteet) {
+			if (p.getKaytossa() && (p.getJononPituus() < l)) {
+				l = p.getJononPituus();
+				lyhin = p;
+			}
+		}
+
+		ArrayList<Palvelupiste> lyhimmat = new ArrayList<Palvelupiste>();
+
+		for (Palvelupiste p : turvatarkastuspisteet) {
+			if (p.getKaytossa() && (p.getJononPituus() == lyhin.getJononPituus())) {
+				lyhimmat.add(p);
+			}
+		}
+
+		int arvotaanNaista = lyhimmat.size();
+		Random randArvonta = new Random();
+
+		if (arvotaanNaista == 1) {
+			return lyhimmat.get(0);
+		} else if (arvotaanNaista == 2) {
+			int luku2 = (randArvonta.nextInt(2));
+			return lyhimmat.get(luku2);
+		} else if (arvotaanNaista == 3) {
+			int luku3 = (randArvonta.nextInt(3));
+			return lyhimmat.get(luku3);
+		} else if (arvotaanNaista == 4) {
+			int luku4 = (randArvonta.nextInt(4));
+			return lyhimmat.get(luku4);
+		} else {
+			int luku5 = (randArvonta.nextInt(5));
+			return lyhimmat.get(luku5);
+		}
+	}
+
+	public void setKeskiarvot(int kesk1, int kesk2, int kesk3, int kesk4, int kesk5) {
+		turvaKa1 = kesk1;
+		turvaKa2 = kesk2;
+		turvaKa3 = kesk3;
+		turvaKa4 = kesk4;
+		turvaKa5 = kesk5;
+		turva1.setGeneraattori(new Negexp(turvaKa1, 15));
+		turva2.setGeneraattori(new Negexp(turvaKa2, 15));
+		turva3.setGeneraattori(new Negexp(turvaKa3, 15));
+		turva4.setGeneraattori(new Negexp(turvaKa4, 15));
+		turva5.setGeneraattori(new Negexp(turvaKa5, 15));
+	}
+
+	public Palvelupiste[] getPalvelupisteet() {
+		return palvelupisteet;
+	}
+}

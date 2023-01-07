@@ -1,0 +1,57 @@
+package simulaattorinrunko5FX.src.simu.model;
+
+import java.text.DecimalFormat;
+
+import simulaattorinrunko5FX.src.simu.framework.Kello;
+import simulaattorinrunko5FX.src.simu.framework.Trace;
+
+
+// TODO:
+// Asiakas koodataan simulointimallin edellyttämällä tavalla (data!)
+public class Asiakas {
+	private double saapumisaika;
+	private double poistumisaika;
+	private int id;
+	private static int i = 1;
+	private static long sum = 0;
+	private static final DecimalFormat df = new DecimalFormat("0.00");
+	
+	public Asiakas(){
+	    id = i++;
+	    
+		saapumisaika = Kello.getInstance().getAika();
+		Trace.out(Trace.Level.INFO, "Uusi asiakas nro " + id + " saapui klo "+ df.format(saapumisaika));
+	}
+
+	public double getPoistumisaika() {
+		return poistumisaika;
+	}
+
+	public void setPoistumisaika(double poistumisaika) {
+		this.poistumisaika = poistumisaika;
+	}
+
+	public double getSaapumisaika() {
+		return saapumisaika;
+	}
+
+	public void setSaapumisaika(double saapumisaika) {
+		this.saapumisaika = saapumisaika;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void raportti(){
+		Trace.out(Trace.Level.INFO, "\nAsiakas "+id+ " valmis! ");
+		Trace.out(Trace.Level.INFO, "Asiakas "+id+ " saapui: " +df.format(saapumisaika));
+		Trace.out(Trace.Level.INFO,"Asiakas "+id+ " poistui: " + df.format(poistumisaika));
+		Trace.out(Trace.Level.INFO,"Asiakas "+id+ " viipyi: " +(df.format(poistumisaika-saapumisaika)));
+		sum += (poistumisaika-saapumisaika);
+		double keskiarvo = sum/id;
+		System.out.println("Asiakkaiden läpimenoaikojen keskiarvo tähän asti "+ df.format(keskiarvo));
+		
+	}
+
+}

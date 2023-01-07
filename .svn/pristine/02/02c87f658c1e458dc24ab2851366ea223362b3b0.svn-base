@@ -1,0 +1,348 @@
+package simulaattorinrunko5FX.src.simu.model;
+
+public class Tulokset {
+	private int ajokertaId;
+	double kokonaisaika;
+	int palvellutAsiakkaat;
+	double matkatavarapisteSuoritusteho;
+	double lahtosselvitysSuoritusteho;
+	double turvatarkastus1Suoritusteho;
+	double turvatarkastus2Suoritusteho;
+	double turvatarkastus3Suoritusteho;
+	double turvatarkastus4Suoritusteho;
+	double turvatarkastus5Suoritusteho;
+	double erityisturvaSuoritusteho;
+	double matkatavarapisteLapimeno;
+	double lahtoselvitysLapimeno;
+	double turvatarkastus1Lapimeno;
+	double turvatarkastus2Lapimeno;
+	double turvatarkastus3Lapimeno;
+	double turvatarkastus4Lapimeno;
+	double turvatarkastus5Lapimeno;
+	double eritysturvaLapimeno;
+	double matkatavarapisteKokonaisoleskelu;
+	double lahtoselvitysKokonaisoleskelu;
+	double turvatarkastus1Kokonaisoleskelu;
+	double turvatarkastus2Kokonaisoleskelu;
+	double turvatarkastus3Kokonaisoleskelu;
+	double turvatarkastus4Kokonaisoleskelu;
+	double turvatarkastus5Kokonaisoleskelu;
+	double erityisturvaKokonaisoleskelu;
+	double matkatavarapisteKaJononPituus;
+	double lahtoselvitysKaJononPituus;
+	double turvatarkastus1KaJononPituus;
+	double turvatarkastus2KaJononPituus;
+	double turvatarkastus3KaJononPituus;
+	double turvatarkastus4KaJononPituus;
+	double turvatarkastus5KaJononPituus;
+	double erityisturvaKaJononPituus;
+
+	public Tulokset() {
+	}
+
+	public double getKokonaisaika() {
+		return kokonaisaika;
+	}
+
+	public void setKokonaisaika(double kokonaisaika) {
+		this.kokonaisaika = kokonaisaika;
+	}
+
+	public int getPalvellutAsiakkaat() {
+		return palvellutAsiakkaat;
+	}
+
+	public void setPalvellutAsiakkaat(int palvellutAsiakkaat) {
+		this.palvellutAsiakkaat = palvellutAsiakkaat;
+	}
+
+	public double getMatkatavarapisteSuoritusteho() {
+		return matkatavarapisteSuoritusteho;
+	}
+
+	public void setMatkatavarapisteSuoritusteho(double matkatavarapisteSuoritusteho) {
+		this.matkatavarapisteSuoritusteho = matkatavarapisteSuoritusteho;
+	}
+
+	public double getLahtosselvitysSuoritusteho() {
+		return lahtosselvitysSuoritusteho;
+	}
+
+	public void setLahtosselvitysSuoritusteho(double lahtosselvitysSuoritusteho) {
+		this.lahtosselvitysSuoritusteho = lahtosselvitysSuoritusteho;
+	}
+
+	public double getTurvatarkastus1Suoritusteho() {
+		return turvatarkastus1Suoritusteho;
+	}
+
+	public void setTurvatarkastus1Suoritusteho(double turvatarkastus1Suoritusteho) {
+		this.turvatarkastus1Suoritusteho = turvatarkastus1Suoritusteho;
+	}
+
+	public double getTurvatarkastus2Suoritusteho() {
+		return turvatarkastus2Suoritusteho;
+	}
+
+	public void setTurvatarkastus2Suoritusteho(double turvatarkastus2Suoritusteho) {
+		this.turvatarkastus2Suoritusteho = turvatarkastus2Suoritusteho;
+	}
+
+	public double getTurvatarkastus3Suoritusteho() {
+		return turvatarkastus3Suoritusteho;
+	}
+
+	public void setTurvatarkastus3Suoritusteho(double turvatarkastus3Suoritusteho) {
+		this.turvatarkastus3Suoritusteho = turvatarkastus3Suoritusteho;
+	}
+
+	public double getTurvatarkastus4Suoritusteho() {
+		return turvatarkastus4Suoritusteho;
+	}
+
+	public void setTurvatarkastus4Suoritusteho(double turvatarkastus4Suoritusteho) {
+		this.turvatarkastus4Suoritusteho = turvatarkastus4Suoritusteho;
+	}
+
+	public double getTurvatarkastus5Suoritusteho() {
+		return turvatarkastus5Suoritusteho;
+	}
+
+	public void setTurvatarkastus5Suoritusteho(double turvatarkastus5Suoritusteho) {
+		this.turvatarkastus5Suoritusteho = turvatarkastus5Suoritusteho;
+	}
+
+	public double getErityisturvaSuoritusteho() {
+		return erityisturvaSuoritusteho;
+	}
+
+	public void setErityisturvaSuoritusteho(double erityisturvaSuoritusteho) {
+		this.erityisturvaSuoritusteho = erityisturvaSuoritusteho;
+	}
+
+	public double getMatkatavarapisteLapimeno() {
+		return matkatavarapisteLapimeno;
+	}
+
+	public void setMatkatavarapisteLapimeno(double matkatavarapisteLapimeno) {
+		this.matkatavarapisteLapimeno = matkatavarapisteLapimeno;
+	}
+
+	public double getLahtoselvitysLapimeno() {
+		return lahtoselvitysLapimeno;
+	}
+
+	public void setLahtoselvitysLapimeno(double lahtoselvitysLapimeno) {
+		this.lahtoselvitysLapimeno = lahtoselvitysLapimeno;
+	}
+
+	public double getTurvatarkastus1Lapimeno() {
+		return turvatarkastus1Lapimeno;
+	}
+
+	public void setTurvatarkastus1Lapimeno(double turvatarkastus1Lapimeno) {
+		this.turvatarkastus1Lapimeno = turvatarkastus1Lapimeno;
+	}
+
+	public double getTurvatarkastus2Lapimeno() {
+		return turvatarkastus2Lapimeno;
+	}
+
+	public void setTurvatarkastus2Lapimeno(double turvatarkastus2Lapimeno) {
+		this.turvatarkastus2Lapimeno = turvatarkastus2Lapimeno;
+	}
+
+	public double getTurvatarkastus3Lapimeno() {
+		return turvatarkastus3Lapimeno;
+	}
+
+	public void setTurvatarkastus3Lapimeno(double turvatarkastus3Lapimeno) {
+		this.turvatarkastus3Lapimeno = turvatarkastus3Lapimeno;
+	}
+
+	public double getTurvatarkastus4Lapimeno() {
+		return turvatarkastus4Lapimeno;
+	}
+
+	public void setTurvatarkastus4Lapimeno(double turvatarkastus4Lapimeno) {
+		this.turvatarkastus4Lapimeno = turvatarkastus4Lapimeno;
+	}
+
+	public double getTurvatarkastus5Lapimeno() {
+		return turvatarkastus5Lapimeno;
+	}
+
+	public void setTurvatarkastus5Lapimeno(double turvatarkastus5Lapimeno) {
+		this.turvatarkastus5Lapimeno = turvatarkastus5Lapimeno;
+	}
+
+	public double getEritysturvaLapimeno() {
+		return eritysturvaLapimeno;
+	}
+
+	public void setEritysturvaLapimeno(double eritysturvaLapimeno) {
+		this.eritysturvaLapimeno = eritysturvaLapimeno;
+	}
+
+	public double getMatkatavarapisteKokonaisoleskelu() {
+		return matkatavarapisteKokonaisoleskelu;
+	}
+
+	public void setMatkatavarapisteKokonaisoleskelu(double matkatavarapisteKokonaisoleskelu) {
+		this.matkatavarapisteKokonaisoleskelu = matkatavarapisteKokonaisoleskelu;
+	}
+
+	public double getLahtoselvitysKokonaisoleskelu() {
+		return lahtoselvitysKokonaisoleskelu;
+	}
+
+	public void setLahtoselvitysKokonaisoleskelu(double lahtoselvitysKokonaisoleskelu) {
+		this.lahtoselvitysKokonaisoleskelu = lahtoselvitysKokonaisoleskelu;
+	}
+
+	public double getTurvatarkastus1Kokonaisoleskelu() {
+		return turvatarkastus1Kokonaisoleskelu;
+	}
+
+	public void setTurvatarkastus1Kokonaisoleskelu(double turvatarkastus1Kokonaisoleskelu) {
+		this.turvatarkastus1Kokonaisoleskelu = turvatarkastus1Kokonaisoleskelu;
+	}
+
+	public double getTurvatarkastus2Kokonaisoleskelu() {
+		return turvatarkastus2Kokonaisoleskelu;
+	}
+
+	public void setTurvatarkastus2Kokonaisoleskelu(double turvatarkastus2Kokonaisoleskelu) {
+		this.turvatarkastus2Kokonaisoleskelu = turvatarkastus2Kokonaisoleskelu;
+	}
+
+	public double getTurvatarkastus3Kokonaisoleskelu() {
+		return turvatarkastus3Kokonaisoleskelu;
+	}
+
+	public void setTurvatarkastus3Kokonaisoleskelu(double turvatarkastus3Kokonaisoleskelu) {
+		this.turvatarkastus3Kokonaisoleskelu = turvatarkastus3Kokonaisoleskelu;
+	}
+
+	public double getTurvatarkastus4Kokonaisoleskelu() {
+		return turvatarkastus4Kokonaisoleskelu;
+	}
+
+	public void setTurvatarkastus4Kokonaisoleskelu(double turvatarkastus4Kokonaisoleskelu) {
+		this.turvatarkastus4Kokonaisoleskelu = turvatarkastus4Kokonaisoleskelu;
+	}
+
+	public double getTurvatarkastus5Kokonaisoleskelu() {
+		return turvatarkastus5Kokonaisoleskelu;
+	}
+
+	public void setTurvatarkastus5Kokonaisoleskelu(double turvatarkastus5Kokonaisoleskelu) {
+		this.turvatarkastus5Kokonaisoleskelu = turvatarkastus5Kokonaisoleskelu;
+	}
+
+	public double getErityisturvaKokonaisoleskelu() {
+		return erityisturvaKokonaisoleskelu;
+	}
+
+	public void setErityisturvaKokonaisoleskelu(double erityisturvaKokonaisoleskelu) {
+		this.erityisturvaKokonaisoleskelu = erityisturvaKokonaisoleskelu;
+	}
+
+	public double getMatkatavarapisteKaJononPituus() {
+		return matkatavarapisteKaJononPituus;
+	}
+
+	public void setMatkatavarapisteKaJononPituus(double matkatavarapisteKaJononPituus) {
+		this.matkatavarapisteKaJononPituus = matkatavarapisteKaJononPituus;
+	}
+
+	public double getLahtoselvitysKaJononPituus() {
+		return lahtoselvitysKaJononPituus;
+	}
+
+	public void setLahtoselvitysKaJononPituus(double lahtoselvitysKaJononPituus) {
+		this.lahtoselvitysKaJononPituus = lahtoselvitysKaJononPituus;
+	}
+
+	public double getTurvatarkastus1KaJononPituus() {
+		return turvatarkastus1KaJononPituus;
+	}
+
+	public void setTurvatarkastus1KaJononPituus(double turvatarkastus1KaJononPituus) {
+		this.turvatarkastus1KaJononPituus = turvatarkastus1KaJononPituus;
+	}
+
+	public double getTurvatarkastus2KaJononPituus() {
+		return turvatarkastus2KaJononPituus;
+	}
+
+	public void setTurvatarkastus2KaJononPituus(double turvatarkastus2KaJononPituus) {
+		this.turvatarkastus2KaJononPituus = turvatarkastus2KaJononPituus;
+	}
+
+	public double getTurvatarkastus3KaJononPituus() {
+		return turvatarkastus3KaJononPituus;
+	}
+
+	public void setTurvatarkastus3KaJononPituus(double turvatarkastus3KaJononPituus) {
+		this.turvatarkastus3KaJononPituus = turvatarkastus3KaJononPituus;
+	}
+
+	public double getTurvatarkastus4KaJononPituus() {
+		return turvatarkastus4KaJononPituus;
+	}
+
+	public void setTurvatarkastus4KaJononPituus(double turvatarkastus4KaJononPituus) {
+		this.turvatarkastus4KaJononPituus = turvatarkastus4KaJononPituus;
+	}
+
+	public double getTurvatarkastus5KaJononPituus() {
+		return turvatarkastus5KaJononPituus;
+	}
+
+	public void setTurvatarkastus5KaJononPituus(double turvatarkastus5KaJononPituus) {
+		this.turvatarkastus5KaJononPituus = turvatarkastus5KaJononPituus;
+	}
+
+	public double getErityisturvaKaJononPituus() {
+		return erityisturvaKaJononPituus;
+	}
+
+	public void setErityisturvaKaJononPituus(double erityisturvaKaJononPituus) {
+		this.erityisturvaKaJononPituus = erityisturvaKaJononPituus;
+	}
+
+	public int getAjokertaId() {
+		return ajokertaId;
+	}
+
+	@Override
+	public String toString() {
+		return "Tulokset [ajokertaId=" + ajokertaId + ",\nkokonaisaika=" + kokonaisaika + ",\npalvellutAsiakkaat="
+				+ palvellutAsiakkaat + ",\nmatkatavarapisteSuoritusteho=" + matkatavarapisteSuoritusteho
+				+ ",\nlahtosselvitysSuoritusteho=" + lahtosselvitysSuoritusteho + ",\nturvatarkastus1Suoritusteho="
+				+ turvatarkastus1Suoritusteho + ",\nturvatarkastus2Suoritusteho=" + turvatarkastus2Suoritusteho
+				+ ",\nturvatarkastus3Suoritusteho=" + turvatarkastus3Suoritusteho + ",\nturvatarkastus4Suoritusteho="
+				+ turvatarkastus4Suoritusteho + ",\nturvatarkastus5Suoritusteho=" + turvatarkastus5Suoritusteho
+				+ ",\nerityisturvaSuoritusteho=" + erityisturvaSuoritusteho + ",\nmatkatavarapisteLapimeno="
+				+ matkatavarapisteLapimeno + ",\nlahtoselvitysLapimeno=" + lahtoselvitysLapimeno
+				+ ",\nturvatarkastus1Lapimeno=" + turvatarkastus1Lapimeno + ",\nturvatarkastus2Lapimeno="
+				+ turvatarkastus2Lapimeno + ",\nturvatarkastus3Lapimeno=" + turvatarkastus3Lapimeno
+				+ ",\nturvatarkastus4Lapimeno=" + turvatarkastus4Lapimeno + ",\nturvatarkastus5Lapimeno="
+				+ turvatarkastus5Lapimeno + ",\neritysturvaLapimeno=" + eritysturvaLapimeno
+				+ ",\nmatkatavarapisteKokonaisoleskelu=" + matkatavarapisteKokonaisoleskelu
+				+ ",\nlahtoselvitysKokonaisoleskelu=" + lahtoselvitysKokonaisoleskelu
+				+ ",\nturvatarkastus1Kokonaisoleskelu=" + turvatarkastus1Kokonaisoleskelu
+				+ ",\nturvatarkastus2Kokonaisoleskelu=" + turvatarkastus2Kokonaisoleskelu
+				+ ",\nturvatarkastus3Kokonaisoleskelu=" + turvatarkastus3Kokonaisoleskelu
+				+ ",\nturvatarkastus4Kokonaisoleskelu=" + turvatarkastus4Kokonaisoleskelu
+				+ ",\nturvatarkastus5Kokonaisoleskelu=" + turvatarkastus5Kokonaisoleskelu
+				+ ",\nerityisturvaKokonaisoleskelu=" + erityisturvaKokonaisoleskelu
+				+ ",\nmatkatavarapisteKaJononPituus=" + matkatavarapisteKaJononPituus + ",\nlahtoselvitysKaJononPituus="
+				+ lahtoselvitysKaJononPituus + ",\nturvatarkastus1KaJononPituus=" + turvatarkastus1KaJononPituus
+				+ ",\nturvatarkastus2KaJononPituus=" + turvatarkastus2KaJononPituus + ",\nturvatarkastus3KaJononPituus="
+				+ turvatarkastus3KaJononPituus + ",\nturvatarkastus4KaJononPituus=" + turvatarkastus4KaJononPituus
+				+ ",\nturvatarkastus5KaJononPituus=" + turvatarkastus5KaJononPituus + ",\nerityisturvaKaJononPituus="
+				+ erityisturvaKaJononPituus + "]";
+	}
+}

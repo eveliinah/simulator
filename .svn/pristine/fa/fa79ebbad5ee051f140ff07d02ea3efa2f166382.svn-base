@@ -1,0 +1,32 @@
+package dao;
+
+import entity.Tulokset;
+import jakarta.persistence.EntityManager;
+
+public class TuloksetDao {
+
+	public void lisaaTulos(Tulokset ajokerta) {
+		EntityManager em = datasource.JpaConn.getInstance();
+		em.getTransaction().begin();
+		em.persist(ajokerta);
+		em.getTransaction().commit();
+	}
+
+	public Tulokset haeTulokset(int ajokertaId) {
+		EntityManager em = datasource.JpaConn.getInstance();
+		em.getTransaction().begin();
+		Tulokset t = em.find(Tulokset.class, ajokertaId);
+		em.getTransaction().commit();
+		return t;
+	}
+
+	public void poistaTulos(int ajokertaId) {
+		EntityManager em = datasource.JpaConn.getInstance();
+		em.getTransaction().begin();
+		Tulokset t = em.find(Tulokset.class, ajokertaId);
+		if (t != null) {
+			em.remove(t);
+		}
+		em.getTransaction().commit();
+	}
+}

@@ -1,0 +1,49 @@
+package dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import entity.Tulokset;
+import jakarta.persistence.EntityManager;
+
+public class TuloksetDao implements IDao {
+
+	public void lisaaTulos(Tulokset ajokerta) {
+		EntityManager em = datasource.JpaConn.getInstance();
+		em.getTransaction().begin();
+		em.persist(ajokerta);
+		em.getTransaction().commit();
+	}
+
+	public Tulokset haeTulokset(int ajokertaId) {
+		EntityManager em = datasource.JpaConn.getInstance();
+		em.getTransaction().begin();
+		Tulokset t = em.find(Tulokset.class, ajokertaId);
+		em.getTransaction().commit();
+		return t;
+	}
+
+	public void poistaTulos(int ajokertaId) {
+		EntityManager em = datasource.JpaConn.getInstance();
+		em.getTransaction().begin();
+		Tulokset t = em.find(Tulokset.class, ajokertaId);
+		if (t != null) {
+			em.remove(t);
+		}
+		em.getTransaction().commit();
+	}
+
+	public ArrayList<String> haeAjokertaLista() {
+		EntityManager em = datasource.JpaConn.getInstance();
+		String jpqlQuery = "SELECT t FROM Tulokset t";
+		jakarta.persistence.Query q = em.createQuery(jpqlQuery);
+		List<Tulokset> tuloksetLista = q.getResultList();
+		ArrayList<String> listViewLista = new ArrayList<>();
+		for (int i = 0; i < tuloksetLista.size(); i++) {
+			String ajokerta = Integer.toString(tuloksetLista.get(i).getAjokertaId());
+			listViewLista.add(ajokerta);
+		}
+
+		return listViewLista;
+	}
+}

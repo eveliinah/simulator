@@ -1,0 +1,317 @@
+package simulaattorinrunko5FX.src.controller;
+
+import javafx.application.Platform;
+import simulaattorinrunko5FX.src.simu.framework.IMoottori;
+import simulaattorinrunko5FX.src.simu.model.OmaMoottori;
+import simulaattorinrunko5FX.src.simu.model.Palvelupiste;
+import simulaattorinrunko5FX.src.view.ISimulaattorinUI;
+import simulaattorinrunko5FX.src.view.SimulaattorinGUI;
+
+public class Kontrolleri implements IKontrolleri { // UUSI
+
+	private IMoottori moottori = new OmaMoottori(this);
+	private ISimulaattorinUI ui;
+
+	public Kontrolleri(ISimulaattorinUI ui) {
+		this.ui = ui;
+	}
+
+	// Moottorin ohjausta:
+
+	@Override
+	public void kaynnistaSimulointi() {
+		// moottori = new OmaMoottori(this); // luodaan uusi moottorisäie jokaista
+		// simulointia varten
+		moottori.setSimulointiaika(ui.getAika());
+		moottori.setViive(ui.getViive());
+		int maara = ui.getMontakoPalvelupistettä();
+		ui.getVisualisointi().tyhjennaNaytto(maara);
+		((Thread) moottori).start();
+		// ((Thread)moottori).run(); // Ei missään tapauksessa näin. Miksi?
+	}
+
+	@Override
+	public void hidasta() { // hidastetaan moottorisäiettä
+		moottori.setViive((long) (moottori.getViive() * 1.10));
+	}
+
+	@Override
+	public void nopeuta() { // nopeutetaan moottorisäiettä
+		moottori.setViive((long) (moottori.getViive() * 0.9));
+	}
+
+	// Simulointitulosten välittämistä käyttöliittymään.
+	// Koska FX-ui:n päivitykset tulevat moottorisäikeestä, ne pitää ohjata
+	// JavaFX-säikeeseen:
+
+	@Override
+	public void naytaLoppuaika(double aika) {
+		Platform.runLater(() -> ui.setLoppuaika(aika));
+	}
+
+	@Override
+	public void naytaPalvellutAsiakkkat(int asiakkaat) {
+		Platform.runLater(() -> ui.setPalvellutAsiakkaat(asiakkaat));
+	}
+
+	public void visualisoiLaukkuAsiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().laukkuAsiakas();
+			}
+		});
+	}
+
+	public void poistaLaukkuAsiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaLaukkuAsiakas();
+			}
+		});
+	}
+
+	@Override
+	public void palvelupisteidenAhkeruus() {
+		int[] luvut = ui.getTurvapisteAhkeruus();
+		((OmaMoottori) moottori).setKeskiarvot(luvunMuunnin(luvut[0]), luvunMuunnin(luvut[1]), luvunMuunnin(luvut[2]),
+				luvunMuunnin(luvut[3]), luvunMuunnin(luvut[4]));
+	}
+
+	public void ruuhkaArvot() {
+		int[] luvut = ((SimulaattorinGUI) ui).getRuuhkaArvot();
+		((OmaMoottori) moottori).setRuuhkaArvot(luvunMuunninRuuhka(luvut[0]), luvunMuunninRuuhka(luvut[1]));
+	}
+
+	@Override
+	public void palvelupisteidenMaara() {
+		moottori = new OmaMoottori(this);
+		int luku = ui.getMontakoPalvelupistettä();
+		((OmaMoottori) moottori).otaPalvelupisteetKayttoon(luku);
+	}
+
+	public void visualisoiLaukutonAsiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().laukutonAsiakas();
+			}
+		});
+	}
+
+	public void visuPaivitaNaytto() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				int luku = ui.getMontakoPalvelupistettä();
+				ui.getVisualisointi().tyhjennaNaytto(luku);
+			}
+		});
+	}
+
+	public void poistaLaukutonAsiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaLaukutonAsiakas();
+			}
+		});
+	}
+
+	public void visualisoiTurva1Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().turva1Asiakas();
+			}
+		});
+	}
+
+	public void poistaTurva1Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaTurva1Asiakas();
+			}
+		});
+	}
+
+	public void visualisoiTurva2Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().turva2Asiakas();
+			}
+		});
+	}
+
+	public void poistaTurva2Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaTurva2Asiakas();
+			}
+		});
+	}
+
+	public void visualisoiTurva3Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().turva3Asiakas();
+			}
+		});
+	}
+
+	public void poistaTurva3Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaTurva3Asiakas();
+			}
+		});
+	}
+
+	public void visualisoiTurva4Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().turva4Asiakas();
+			}
+		});
+	}
+
+	public void poistaTurva4Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaTurva4Asiakas();
+			}
+		});
+	}
+
+	public void visualisoiTurva5Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().turva5Asiakas();
+			}
+		});
+	}
+
+	public void poistaTurva5Asiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaTurva5Asiakas();
+			}
+		});
+	}
+
+	public void visualisoiETurvaAsiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().eTurvaAsiakas();
+			}
+		});
+	}
+
+	public void poistaETurvaAsiakas() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				ui.getVisualisointi().poistaETurvaAsiakas();
+			}
+		});
+	}
+
+	public int luvunMuunnin(int luku) {
+		if (luku == 0) {
+			luku = 5;
+			return luku;
+		} else if (luku == 1) {
+			luku = 10;
+			return luku;
+		} else if (luku == 2) {
+			luku = 15;
+			return luku;
+		} else if (luku == 3) {
+			luku = 20;
+			return luku;
+		} else {
+			luku = 25;
+			return luku;
+		}
+
+	}
+
+	public int luvunMuunninRuuhka(int luku) {
+		if (luku == 0) {
+			luku = 5;
+			return luku;
+		} else if (luku == 1) {
+			luku = 10;
+			return luku;
+		} else if (luku == 2) {
+			luku = 15;
+			return luku;
+		} else if (luku == 3) {
+			luku = 25;
+			return luku;
+		} else {
+			luku = 100;
+			return luku;
+		}
+
+	}
+
+	public void asetaLapimenoajat() {
+
+		Double[] palautettavat = new Double[8];
+
+		Palvelupiste[] palvelupisteet = ((OmaMoottori) moottori).getPalvelupisteet();
+
+		for (int i = 0; i < palvelupisteet.length; i++) {
+
+			palautettavat[i] = palvelupisteet[i].getPpKeskimaarainenLapimeno();
+
+		}
+
+		((SimulaattorinGUI) ui).setLapimenoajat(palautettavat[0], palautettavat[1], palautettavat[2], palautettavat[3],
+				palautettavat[4], palautettavat[5], palautettavat[6], palautettavat[7]);
+	}
+
+	public void asetaKokonaisoleskeluajat() {
+		Double[] palautettavat = new Double[8];
+
+		Palvelupiste[] palvelupisteet = ((OmaMoottori) moottori).getPalvelupisteet();
+
+		for (int i = 0; i < palvelupisteet.length; i++) {
+
+			palautettavat[i] = palvelupisteet[i].getPpKokonaisoleskeluaika();
+
+		}
+
+		((SimulaattorinGUI) ui).setKokonaisoleskeluajat(palautettavat[0], palautettavat[1], palautettavat[2],
+				palautettavat[3], palautettavat[4], palautettavat[5], palautettavat[6], palautettavat[7]);
+
+	}
+
+	public void asetaJononpituudet() {
+		Double[] palautettavat = new Double[8];
+
+		Palvelupiste[] palvelupisteet = ((OmaMoottori) moottori).getPalvelupisteet();
+
+		for (int i = 0; i < palvelupisteet.length; i++) {
+
+			palautettavat[i] = palvelupisteet[i].getPpKeskimaarainenJononPituus();
+
+		}
+
+		((SimulaattorinGUI) ui).setJononpituudet(palautettavat[0], palautettavat[1], palautettavat[2], palautettavat[3],
+				palautettavat[4], palautettavat[5], palautettavat[6], palautettavat[7]);
+
+	}
+
+	public void asetaSuoritustehot() {
+		Double[] palautettavat = new Double[8];
+
+		Palvelupiste[] palvelupisteet = ((OmaMoottori) moottori).getPalvelupisteet();
+
+		for (int i = 0; i < palvelupisteet.length; i++) {
+
+			palautettavat[i] = palvelupisteet[i].getPpSuoritusteho();
+
+		}
+
+		((SimulaattorinGUI) ui).setSuoritustehot(palautettavat[0], palautettavat[1], palautettavat[2], palautettavat[3],
+				palautettavat[4], palautettavat[5], palautettavat[6], palautettavat[7]);
+
+	}
+
+}

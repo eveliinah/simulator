@@ -1,0 +1,152 @@
+package simulaattorinrunko5FX.src.simu.model;
+
+import java.text.DecimalFormat;
+import java.util.LinkedList;
+
+import simulaattorinrunko5FX.src.eduni.distributions.ContinuousGenerator;
+import simulaattorinrunko5FX.src.simu.framework.Kello;
+import simulaattorinrunko5FX.src.simu.framework.Tapahtuma;
+import simulaattorinrunko5FX.src.simu.framework.Tapahtumalista;
+import simulaattorinrunko5FX.src.simu.framework.Trace;
+
+// TODO:
+// Palvelupistekohtaiset toiminnallisuudet, laskutoimitukset (+ tarvittavat muuttujat) ja raportointi koodattava
+public class Palvelupiste {
+	private LinkedList<Asiakas> jono; // Tietorakennetoteutus
+	Kello kello = Kello.getInstance();
+	private static final DecimalFormat df = new DecimalFormat("0.00");
+
+	private ContinuousGenerator generator;
+	private Tapahtumalista tapahtumalista;
+	private TapahtumanTyyppi skeduloitavanTapahtumanTyyppi;
+	private boolean kaytossa;
+
+	private int palveltujenLkm = 0;
+	private int saapuneidenLkm = 0;
+	private double palvelupisteenAktiiviaika = 0;
+	private double ppKokonaisoleskeluaika = 0;
+	private double ppKeskimaarainenLapimeno;
+	private double ppKeskimaarainenJononPituus;
+	private double ppSuoritusteho;
+
+	// JonoStartegia strategia; //optio: asiakkaiden järjestys
+
+	private boolean varattu = false;
+
+	public Palvelupiste(ContinuousGenerator generator, Tapahtumalista tapahtumalista, TapahtumanTyyppi tyyppi) {
+		this.tapahtumalista = tapahtumalista;
+		this.generator = generator;
+		this.skeduloitavanTapahtumanTyyppi = tyyppi;
+		this.jono = new LinkedList<Asiakas>();
+		this.kaytossa = false;
+	}
+
+	/*
+	 * public Palvelupiste(ContinuousGenerator generator, Tapahtumalista
+	 * tapahtumalista, TapahtumanTyyppi tyyppi, LinkedList<Asiakas> jono){
+	 * this.tapahtumalista = tapahtumalista; this.generator = generator;
+	 * this.skeduloitavanTapahtumanTyyppi = tyyppi; this.jono = jono; }
+	 */
+
+	public void lisaaJonoon(Asiakas a) { // Jonon 1. asiakas aina palvelussa
+		jono.add(a);
+		saapuneidenLkm++;
+
+	}
+
+	public Asiakas otaJonosta() { // Poistetaan palvelussa ollut
+		varattu = false;
+		palveltujenLkm++;
+		return jono.poll();
+	}
+
+	public void aloitaPalvelu() { // Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
+
+		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + jono.peek().getId() + "tyyppi: "
+				+ skeduloitavanTapahtumanTyyppi);
+
+		varattu = true;
+		double palveluaika = generator.sample();
+		palvelupisteenAktiiviaika += palveluaika;
+		tapahtumalista.lisaa(new Tapahtuma(skeduloitavanTapahtumanTyyppi, Kello.getInstance().getAika() + palveluaika));
+	}
+
+	public boolean onVarattu() {
+		return varattu;
+	}
+
+	public boolean onJonossa() {
+		return jono.size() != 0;
+	}
+
+	public int getPalveltujenLkm() {
+		return palveltujenLkm;
+	}
+
+	public int getSaapuneidenLkm() {
+		return saapuneidenLkm;
+	}
+
+	public double getPalvelupisteenAktiiviaika() {
+		return palvelupisteenAktiiviaika;
+	}
+
+	public int getJononPituus() {
+		return jono.size();
+	}
+
+	public void setGeneraattori(ContinuousGenerator generator) {
+		this.generator = generator;
+	}
+
+	public void muutaKaytossa() {
+		kaytossa = !kaytossa;
+		System.out.println(kaytossa);
+	}
+
+	public boolean getKaytossa() {
+		return kaytossa;
+	}
+
+	public double getPpKokonaisoleskeluaika() {
+		if (kaytossa) {
+			return ppKokonaisoleskeluaika;
+		}
+		return 0;
+	}
+
+	public void setPpKokonaisoleskeluaika(double oleskeluaika) {
+		this.ppKokonaisoleskeluaika += oleskeluaika;
+	}
+
+	public double getPpKeskimaarainenLapimeno() {
+		if (kaytossa) {
+			return ppKeskimaarainenLapimeno;
+		}
+		return 0;
+	}
+
+	public double getPpKeskimaarainenJononPituus() {
+		if (kaytossa) {
+			return ppKeskimaarainenJononPituus;
+		}
+		return 0;
+	}
+
+	public double getPpSuoritusteho() {
+		if (kaytossa) {
+			return ppSuoritusteho;
+		}
+		return 0;
+	}
+
+	public String raportti() {
+		ppKeskimaarainenLapimeno = ppKokonaisoleskeluaika / palveltujenLkm;
+		ppKeskimaarainenJononPituus = ppKokonaisoleskeluaika / kello.getAika();
+		ppSuoritusteho = palveltujenLkm / kello.getAika();
+
+		return "\nkokonaisoleskeluaika " + df.format(ppKokonaisoleskeluaika) + "\nkeskimääräinen läpimenoaika "
+				+ df.format(ppKeskimaarainenLapimeno) + "\nkeskimääräinen jononpituus "
+				+ df.format(ppKeskimaarainenJononPituus) + "\nsuoritusteho " + df.format(ppSuoritusteho) + "\n";
+	}
+}

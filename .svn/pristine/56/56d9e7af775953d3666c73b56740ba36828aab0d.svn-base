@@ -1,0 +1,18 @@
+package simulaattorinrunko5FX.src.view;
+
+public interface IVisualisointi {
+
+	public void tyhjennaNaytto();
+	
+	public void tyhjennaNaytto(int maara);
+	
+	public void laukkuAsiakas();
+	
+	public void laukutonAsiakas();
+	
+	public void poistaLaukkuAsiakas();
+	
+	public void poistaLaukutonAsiakas();
+		
+}
+

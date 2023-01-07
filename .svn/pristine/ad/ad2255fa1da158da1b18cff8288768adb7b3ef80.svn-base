@@ -1,0 +1,99 @@
+package simulaattorinrunko5FX.src.simu.model;
+
+import java.util.Random;
+
+import simulaattorinrunko5FX.src.controller.IKontrolleri;
+import simulaattorinrunko5FX.src.eduni.distributions.Negexp;
+import simulaattorinrunko5FX.src.eduni.distributions.Normal;
+import simulaattorinrunko5FX.src.simu.framework.Kello;
+import simulaattorinrunko5FX.src.simu.framework.Moottori;
+import simulaattorinrunko5FX.src.simu.framework.Saapumisprosessi;
+import simulaattorinrunko5FX.src.simu.framework.Tapahtuma;
+
+public class OmaMoottori extends Moottori {
+
+	private Saapumisprosessi s_laukut;
+	private Saapumisprosessi s_checkin;
+
+	public OmaMoottori(IKontrolleri kontrolleri) { // UUSI
+
+		super(kontrolleri); // UUSI
+
+		palvelupisteet = new Palvelupiste[4];
+
+		palvelupisteet[0] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.P_LAUKUT);
+		palvelupisteet[1] = new Palvelupiste(new Normal(10, 10), tapahtumalista, TapahtumanTyyppi.P_TURVA);
+		palvelupisteet[2] = new Palvelupiste(new Normal(5, 3), tapahtumalista, TapahtumanTyyppi.P_CHECKIN);
+		palvelupisteet[3] = new Palvelupiste(new Normal(5, 3), tapahtumalista, TapahtumanTyyppi.P_ERITYISTURVA);
+		s_checkin = new Saapumisprosessi(new Negexp(1, 15), tapahtumalista, TapahtumanTyyppi.S_CHECKIN);
+		s_laukut = new Saapumisprosessi(new Negexp(15, 5), tapahtumalista, TapahtumanTyyppi.S_LAUKUT);
+
+	}
+
+	@Override
+	protected void alustukset() {
+		s_checkin.generoiSeuraava();
+		s_laukut.generoiSeuraava();// Ensimmäinen saapuminen järjestelmään
+	}
+
+	@Override
+	protected void suoritaTapahtuma(Tapahtuma t) { // B-vaiheen tapahtumat
+
+		Asiakas a;
+		switch (t.getTyyppi()) {
+
+		case S_CHECKIN:
+			palvelupisteet[2].lisaaJonoon(new Asiakas());
+			s_checkin.generoiSeuraava();
+			kontrolleri.visualisoiLaukutonAsiakas();
+			break;
+		case S_LAUKUT:
+			palvelupisteet[0].lisaaJonoon(new Asiakas());
+			s_laukut.generoiSeuraava();
+			kontrolleri.visualisoiLaukkuAsiakas();
+			break;
+		case P_CHECKIN:
+			a = palvelupisteet[2].otaJonosta();
+			palvelupisteet[1].lisaaJonoon(a);
+			break;
+		case P_LAUKUT:
+			a = palvelupisteet[0].otaJonosta();
+			palvelupisteet[1].lisaaJonoon(a);
+			break;
+		case P_TURVA:
+			a = palvelupisteet[1].otaJonosta();
+			// palvelupisteet[3].lisaaJonoon(a);
+			Random rand = new Random();
+			int mihin = rand.nextInt(5);
+			if (mihin == 1) {
+				palvelupisteet[3].lisaaJonoon(a);
+				break;
+			} else {
+				a.setPoistumisaika(Kello.getInstance().getAika());
+				a.raportti();
+			}
+			break;
+		case P_ERITYISTURVA:
+			a = palvelupisteet[3].otaJonosta();
+			a.setPoistumisaika(Kello.getInstance().getAika());
+			a.raportti();
+
+		}
+	}
+
+	@Override
+	protected void tulokset() {
+		int summa = 0;
+		kontrolleri.naytaLoppuaika(Kello.getInstance().getAika());
+		for (int i = 0; i < palvelupisteet.length; i++) {
+			summa += palvelupisteet[i].getPalveltujenLkm();
+		}
+		kontrolleri.naytaPalvellutAsiakkkat(summa);
+
+		System.out.println("Simulointi päättyi kello " + Kello.getInstance().getAika());
+		System.out.println("Tulokset ... puuttuvat vielä");
+		// palvelupistekohtaisesti: palveltujen + saapuneiden LKM
+		// koko järjestelmän tasolla edelliset
+	}
+
+}
