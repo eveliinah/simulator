@@ -1,21 +1,23 @@
 # Simulator desktop application
 
+Used technologies:
 - Java
 - JavaFx
 - jUnit Tests
 - MariaDB
 - Hibernate
 - Java Persistence API
+- Maven
 
-Airport-simulator. Test how many people arrive to the airport in given time. Choose how many security controls are available and select how fast the eployees work.
+This Airport-simulator application follows the Model-View-Controller (MVC) architectural pattern. Using the application you can test how many people arrive to the airport in a given time. Choose how many security controls are available and select how fast the employees work.
 
 <img src="simulator.jpg" width="400">
 
-See the arriving people in an animation.
+You can observe the arrival of people through an animated representation.
 
 <img src="simu.jpg" width="400">
 
-See the results in a graph and get old results from the database.
+You can view the results in a graph and access historical data from the database.
 
 <img src="results.jpg" width="400">
 
