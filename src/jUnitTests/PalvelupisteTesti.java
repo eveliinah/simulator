@@ -19,12 +19,4 @@ class PalvelupisteTesti {
 		assertFalse(palvelupiste.getKaytossa());
 	}
 
-	/*
-	 * @Test void jonoonlisays() { var a = new Asiakas(); var palvelupiste = new
-	 * Palvelupiste(new Negexp(5, 15), tapahtumalista, TapahtumanTyyppi.P_TURVA1);
-	 * palvelupiste.lisaaJonoon(a);
-	 * 
-	 * }
-	 */
-
 }
