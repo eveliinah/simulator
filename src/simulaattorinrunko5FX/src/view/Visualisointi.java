@@ -54,7 +54,6 @@ public class Visualisointi extends Canvas implements IVisualisointi {
 		gc.fillOval(i, j, 20, 20);
 
 		i = (i - 20);
-		// j = (j + 12) % this.getHeight();
 		if (i <= 0) {
 			i = 140;
 			j -= 20;
