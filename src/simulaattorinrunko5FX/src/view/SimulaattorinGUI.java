@@ -51,7 +51,6 @@ import simulaattorinrunko5FX.src.simu.framework.Trace.Level;
  */
 public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
-	// Kontrollerin esittely (tarvitaan käyttöliittymässä)
 	private IKontrolleri kontrolleri;
 
 	// Käyttöliittymäkomponentit:
