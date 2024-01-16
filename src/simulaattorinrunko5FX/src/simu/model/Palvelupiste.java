@@ -8,9 +8,6 @@ import simulaattorinrunko5FX.src.simu.framework.Tapahtuma;
 import simulaattorinrunko5FX.src.simu.framework.Tapahtumalista;
 import simulaattorinrunko5FX.src.simu.framework.Trace;
 
-// TODO:
-// Palvelupistekohtaiset toiminnallisuudet, laskutoimitukset (+ tarvittavat muuttujat) ja raportointi koodattava
-
 /**
  * Luokka <code>Palvelupiste</code> .
  *
