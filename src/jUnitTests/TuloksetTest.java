@@ -11,8 +11,6 @@ class TuloksetTest {
 
 	@Test
 	void tuleekoIndeksienArvotOikein() {
-		// huom! testi ei testaa jokaista muuttujaa joten kirjoitusvirheitä ei kannata
-		// tehdä
 		var moottori = new OmaMoottori(null);
 		moottori.pyydaPalvelupisteenTulokset();
 		moottori.jUnitTestiTulokset();
@@ -29,8 +27,7 @@ class TuloksetTest {
 	}
 
 	@Test
-	void toimiikoMuokatutSetteritOikein() {
-		// testaa kaikki setterit
+	void toimiikoSetteritOikein() {
 		var moottori = new OmaMoottori(null);
 		moottori.pyydaPalvelupisteenTulokset();
 		moottori.jUnitTestiTulokset2();
